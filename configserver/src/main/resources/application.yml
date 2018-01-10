@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: scconfig
+  cloud:
+    bus:
+      destination: cfg
+      trace:
+        enabled: true
+    config:    
+      label: trunk
+      server:
+        native:
+          defaultLabel: trunk
+          searchPaths:
+          - '{application}'
+        svn:
+          uri: 
+          username: 
+          password: 
+          searchPaths:
+          - '{application}'
+          basedir:
+            D:\tmp\svncache\
+      override-none: true
+    stream:
+      bindings:
+        springCloudBusInput:
+          destination: cfg
+          contentType: text/plain
+          group: default
+          durableSubscription: true
+        springCloudBusOutput:
+          destination: cfg
+          contentType: text/plain
+          group: default
+          durableSubscription: true
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    queue: cfg
+    virtual-host: /
+    channel: cfg
+    exchange: springCloudBus
+    group: groupName
+    
+  profiles:
+    active: subversion,dev,uat,prod
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka.io:9000/eureka/
+      register-with-eureka: true
+      fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+server:
+  port: 7000
+  
+management:
+  security:
+    enabled: false
+    
+xhr:
+  config:
+    pathToWatch:
+    - D:\tmp\svncache\trunk\config-server-test
+    - D:\tmp\svncache\trunk

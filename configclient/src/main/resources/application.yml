@@ -1,0 +1,14 @@
+server:
+  port: 7002
+  
+management:
+  security:
+    enabled: false
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka.io:9001/eureka/
+      
+app:
+  name: cfg

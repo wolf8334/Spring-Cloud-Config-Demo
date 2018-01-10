@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: config-server-test
+    
+  cloud:
+    bus:
+      destination: cfg
+    config: # 配置中心配置
+      profile: subversion,dev,uat,prod
+      fail-fast: true
+      override-none: true
+      uri: http://localhost:7000
+    stream:
+      bindings:
+        springCloudBusInput:
+          destination: cfg
+          contentType: text/plain
+          group: default
+          durableSubscription: true
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    queue: cfg
+    virtual-host: /
+    channel: cfg
+    exchange: springCloudBus
+    group: groupName

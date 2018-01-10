@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<!--日志输出格式定义-->
+	<property name="layoutPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36}]: %msg %n"/>
+	<!--可将默认的配置文件注释,完全定制自己所需的配置
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	-->
+	
+	<!-- 为了springboot admin可以进行日志级别控制,必须开启jmx -->
+	<jmxConfigurator/>
+    <!-- 控制台输出appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${layoutPattern}</pattern>
+        </encoder>
+    </appender>
+    
+    <!--每天生成一个告警日志文件,保存30天的日志文件-->
+    <appender name="DailyWarnFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+      		<onMatch>ACCEPT</onMatch>
+      		<onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/logs/warn/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${layoutPattern}</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="org.apache.kafka.common" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    
+    <!--根logger控制输出INFO级别,由各自的appender进行过滤输出-->
+    <root level="INFO">
+    	<appender-ref ref="STDOUT"/>
+        <appender-ref ref="DailyWarnFile"/>
+    </root>
+</configuration>
