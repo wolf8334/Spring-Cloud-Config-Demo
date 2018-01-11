@@ -12,8 +12,24 @@ public class ConfigRestController {
 	@Value("${app.name}")
 	private String appName;
 
+	@Value("${database.username}")
+	private String username;
+
+	@Value("${database.password}")
+	private String password;
+
 	@RequestMapping("/appName")
 	public String getAppName() {
 		return appName;
+	}
+
+	@RequestMapping("/username")
+	public String getUsername() {
+		return username;
+	}
+
+	@RequestMapping("/password")
+	public String getPassword() {
+		return password;
 	}
 }

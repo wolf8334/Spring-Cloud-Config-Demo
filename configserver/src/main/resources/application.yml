@@ -9,6 +9,9 @@ spring:
     config:    
       label: trunk
       server:
+        encrypt:
+          enabled: true
+      server:
         native:
           defaultLabel: trunk
           searchPaths:

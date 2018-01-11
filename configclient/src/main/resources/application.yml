@@ -12,3 +12,7 @@ eureka:
       
 app:
   name: cfg
+  
+database:
+  username: user
+  password: encrypt
